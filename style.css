@@ -1,0 +1,15 @@
+.inner-card{
+    overflow: hidden;
+}
+.card-icons{
+    position: absolute;
+    top: 2%;
+    right: -20%;
+    transition: 0.3s;
+}
+.inner-card:hover .card-icons{
+    right: 5%;
+}
+.icon{
+    cursor: pointer;
+}
