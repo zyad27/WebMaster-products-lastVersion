@@ -27,20 +27,22 @@ async function loadProducts(url) {
     container.innerHTML = products
         .map(
             (product) => `
-          <div class="position-relative inner-card col-md-3">
-              <img src="${product.thumbnail}" class="rounded" alt="${product.title}" />
-              <h6 class="text-center mt-3 fw-bold">${product.title}</h6>
-              <p class="text-center fw-medium">$ ${product.price} USD</p>
-              <div class="card-icons d-flex flex-column align-items-center">
-                <p class="icon cart-btn" title="add to cart" data-id="${product.id}">
-                    <i class="fa-solid fa-cart-shopping text-dark"></i>
+        <div class="col-xl-3 col-md-6 col-sm-6 col-12 d-flex flex-column aling-items-center">
+            <img src="${product.thumbnail}" class="rounded" alt="${product.title}" />
+            <h6 class="text-center mt-3 fw-bold">${product.title}</h6>
+            <p class="text-center fw-medium">$ ${product.price} USD</p>
+            <div class="card-icons">
+                <p class="icon cart-btn w-48" title="add to cart" data-id="${product.id}">
+                    <i class="fa-solid fa-cart-shopping text-light"></i>
+                    Add to Cart
                 </p>
-                <p class="icon wishlist-btn" title="add to wishlist" data-id="${product.id}">
-                    <i class="fa-solid fa-heart text-dark"></i>
+                <p class="icon wishlist-btn text-light w-48 fz-95" title="add to wishlist" data-id="${product.id}">
+                    <i class="fa-solid fa-heart text-light"></i>
+                    Add to Wishlist
                 </p>
-                <a href="#" class="btn btn-warning">View</a>
-              </div>
-          </div>
+            </div>
+            <a href="details.html" class="btn btn-warning text-light" title="View More Details">View Details</a>
+        </div>
         `
         )
         .join("");
