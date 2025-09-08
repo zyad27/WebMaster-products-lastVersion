@@ -1,6 +1,5 @@
 const selectTag = document.getElementById("selectCategory");
 const container = document.getElementById("cards");
-
 // تحميل التصنيفات
 async function selectCategory() {
     let response = await fetch("https://dummyjson.com/products/categories");
@@ -27,21 +26,33 @@ async function loadProducts(url) {
     container.innerHTML = products
         .map(
             (product) => `
-        <div class="col-xl-3 col-md-6 col-sm-6 col-12 d-flex flex-column aling-items-center">
-            <img src="${product.thumbnail}" class="rounded" alt="${product.title}" />
-            <h6 class="text-center mt-3 fw-bold">${product.title}</h6>
-            <p class="text-center fw-medium">$ ${product.price} USD</p>
-            <div class="card-icons">
-                <p class="icon cart-btn w-48" title="add to cart" data-id="${product.id}">
-                    <i class="fa-solid fa-cart-shopping text-light"></i>
-                    Add to Cart
+        <div onclick="window.location.href='details.html'" class="col-xl-3 col-md-6 col-sm-6 col-12 d-flex flex-column aling-items-center my-3">
+            <div id="cardContainer" class="card-container p-4 rounded position-relative">
+                <img src="${product.thumbnail}" class="rounded img-fluid" alt="${product.title}" />
+                <h6 class="text-center mt-3 fw-bold">${product.title}</h6>
+                <p class="d-flex justify-content-between">
+                    <span class="ms-4 text-danger fw-medium"><s>${Math.ceil(product.price)} $</s></span>
+                    <span class="me-4 fw-medium">${Math.ceil((product.price)-(product.price*0.1))} $</span>
                 </p>
-                <p class="icon wishlist-btn text-light w-48 fz-95" title="add to wishlist" data-id="${product.id}">
-                    <i class="fa-solid fa-heart text-light"></i>
-                    Add to Wishlist
+                <p class="product-rate text-center">
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <i class="fa-regular fa-star"></i>
                 </p>
+                <div class="card-icons">
+                    <p class="icon cart-btn w-100" title="add to cart" data-id="${product.id}">
+                        <i class="fa-solid fa-cart-shopping text-light"></i>
+                        Add to Cart
+                    </p>
+                    <p class="icon wishlist-btn text-light w-100" title="add to wishlist" data-id="${product.id}">
+                        <i class="fa-solid fa-heart text-light"></i>
+                        Add to Wishlist
+                    </p>
+                </div>
+                <span class="badge bg-danger">-10% OFF</span>
             </div>
-            <a href="details.html" class="btn btn-warning text-light" title="View More Details">View Details</a>
         </div>
         `
         )
@@ -90,3 +101,4 @@ selectTag.addEventListener("change", () => {
 
 // أول تحميل
 selectCategory();
+
