@@ -24,22 +24,35 @@ async function loadProducts(url) {
     let products = data.products;
 
     container.innerHTML = products
-        .map(
-            (product) => `
+        .map((product) => {
+            // ⭐ توليد النجوم حسب التقييم
+            let stars = "";
+            let fullStars = Math.floor(product.rating); // عدد النجوم المملوءة
+            let halfStar = product.rating % 1 >= 0.5; // لو في نص نجمة
+            let emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+            let discountedPrice = product.price - (product.price * product.discountPercentage / 100);
+
+            for (let i = 0; i < fullStars; i++) {
+                stars += `<i class="fa-solid fa-star text-warning"></i>`;
+            }
+            if (halfStar) {
+                stars += `<i class="fa-solid fa-star-half-stroke text-warning"></i>`;
+            }
+            for (let i = 0; i < emptyStars; i++) {
+                stars += `<i class="fa-regular fa-star text-warning"></i>`;
+            }
+
+            return `
         <div onclick="window.location.href='details.html'" class="col-xl-3 col-md-6 col-sm-6 col-12 d-flex flex-column aling-items-center my-3">
             <div id="cardContainer" class="card-container p-4 rounded position-relative">
                 <img src="${product.thumbnail}" class="rounded img-fluid" alt="${product.title}" />
                 <h6 class="text-center mt-3 fw-bold">${product.title}</h6>
                 <p class="d-flex justify-content-between">
                     <span class="ms-4 text-danger fw-medium"><s>${Math.ceil(product.price)} $</s></span>
-                    <span class="me-4 fw-medium">${Math.ceil((product.price)-(product.price*0.1))} $</span>
+                    <span class="me-4 fw-medium">${Math.ceil(discountedPrice)} $</span>
                 </p>
                 <p class="product-rate text-center">
-                    <i class="fa-solid fa-star text-warning"></i>
-                    <i class="fa-solid fa-star text-warning"></i>
-                    <i class="fa-solid fa-star text-warning"></i>
-                    <i class="fa-solid fa-star text-warning"></i>
-                    <i class="fa-regular fa-star"></i>
+                    ${stars} <span class="text-muted small">(${product.rating.toFixed(1)})</span>
                 </p>
                 <div class="card-icons">
                     <p class="icon cart-btn w-100" title="add to cart" data-id="${product.id}">
@@ -51,11 +64,11 @@ async function loadProducts(url) {
                         Add to Wishlist
                     </p>
                 </div>
-                <span class="badge bg-danger">-10% OFF</span>
+                <span class="badge bg-danger">-${Math.ceil(product.discountPercentage)}% OFF</span>
             </div>
         </div>
-        `
-        )
+        `;
+        })
         .join("");
 
     // ✅ إضافة الأحداث بعد عرض المنتجات
@@ -93,6 +106,7 @@ async function loadProducts(url) {
         });
     });
 }
+
 
 // عند تغيير الاختيار
 selectTag.addEventListener("change", () => {
